@@ -11,7 +11,7 @@
 	<key>isDashDocset</key>
 	<true/>
 	<key>dashIndexFilePath</key>
-	<string>clojuredocs.org/index.html</string>
+	<string>clojuredocs.org/core-library.html</string>
         <key>isJavaScriptEnabled</key><true/>
 </dict>
 </plist>

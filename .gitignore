@@ -2,6 +2,7 @@
 /lib
 /classes
 /checkouts
+/httrack-clojuredocs.org
 pom.xml
 pom.xml.asc
 *.jar

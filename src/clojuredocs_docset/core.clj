@@ -1,6 +1,7 @@
 (ns clojuredocs-docset.core
   (:require [clojure.java.jdbc :as j]
-  			[clojure.java.jdbc.sql :as sql])
+            [clojure.java.jdbc.sql :as sql]
+            [clojure.string :as string])
   (:use [clojure.java.shell :only [sh]]
         [clojure.java.io :only [file resource]])
   (:import [org.jsoup Jsoup]
@@ -31,7 +32,7 @@
   (flush)))
 
 (defn mirror-clojuredocs []
-  (print-progress 15 "Mirroring clojuredocs.org/clojure_core")
+  (print-progress 15 "Mirroring clojuredocs.org/clojure.core")
   (apply sh (:httrack conf)))
 
 (defn create-docset-template []
@@ -46,25 +47,25 @@
 
 (defn clear-search-index []
   (print-progress 60 "Clearing index")
-  (j/with-connection sqlite-db 
+  (j/with-connection sqlite-db
     (j/do-commands "DROP TABLE IF EXISTS searchIndex"
                    "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"
                    "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)")))
 
-(defn populate-search-index [rows]  
-  (j/with-connection sqlite-db 
+(defn populate-search-index [rows]
+  (j/with-connection sqlite-db
     (apply j/insert-records :searchIndex rows)))
 
 (defn search-index-attributes [element]
-  {:name (.text element) 
-   :type "Function" 
-   :path (str "clojuredocs.org/" (.attr element "href"))})
+  {:name (.text element)
+   :type "Function"
+   :path (str "clojuredocs.org/" (string/replace (.attr element "href") #"\.\." ""))})
 
 (defn generate-search-index []
   (print-progress 75 "Generating index")
   (let [html-content (slurp (str user-dir "/" (:index-html-path conf)))
         document (Jsoup/parse html-content)
-        rows (map search-index-attributes (.select document ".function a"))]            
+        rows (map search-index-attributes (.select document ".var-list a"))]
     (populate-search-index rows)))
 
 (defn generate-docset []
