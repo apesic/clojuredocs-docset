@@ -2,7 +2,7 @@
 
 Performs the following:
 
-* Mirror clojuredocs.org/clojure_core (around 17mb) using [HTTrack][httrack]
+* Mirror clojuredocs.org/clojure_core (around 17mb) using wget
 * Copy html content to default dash docset template
 * Parse all functions from clojure_core.html
 * Populate searchIndex in docSet.dsidx (sqlite db)
@@ -11,19 +11,15 @@ Performs the following:
 
 Install the following dependencies:
 
-    $ brew install httrack
-    $ brew install leiningen
+    brew install wget
+    brew install leiningen
 
 ## Usage
 
-Download [uberjar][releases] and run:
+Generate with
 
-    $ java -jar clojuredocs-docset-<version>-standalone.jar
+    lein run
 
-or clone source to customize [HTTrack][httrack] in config.clj and run:
-
-    $ lein run
-    
 Import the generated clojure-docs.docset into [Dash][dash].
 
 ## License

@@ -2,7 +2,8 @@
 /lib
 /classes
 /checkouts
-/httrack-clojuredocs.org
+/clojuredocs.org
+/clojure-docs.docset
 pom.xml
 pom.xml.asc
 *.jar
